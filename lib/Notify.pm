@@ -6,7 +6,7 @@ use Gtk2;
 require DynaLoader;
 
 our @ISA = qw( DynaLoader );
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub import {
     my $class = shift;
@@ -41,8 +41,7 @@ Gtk2::Notify - Perl interface to libnotify
 
 =head1 VERSION
 
-Version 0.02
-
+Version 0.04
 
 =head1 SYNOPSIS
 
@@ -59,7 +58,9 @@ Version 0.02
 
 =item -init
 
-Importing Gtk2::Notify with the -init option requires one additional argument: the application name to use. This is equivalent to Gtk2::Notify->init($app_name).
+Importing Gtk2::Notify with the -init option requires one additional argument:
+the application name to use. This is equivalent to
+Gtk2::Notify->init($app_name).
 
 =back
 
@@ -105,7 +106,7 @@ L<http://search.cpan.org/dist/Gtk2-Notify>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2006 Florian Ragwitz, all rights reserved.
+Copyright 2006-2007 Florian Ragwitz, all rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Library General Public

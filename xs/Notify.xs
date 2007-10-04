@@ -45,19 +45,23 @@ C<Gtk2::Notify-E<gt>init($app_name)>.
 gboolean
 notify_init (class, app_name)
 		const char *app_name
-	C_ARGS: app_name
+	C_ARGS:
+		app_name
 
 void
 notify_uninit (class)
-	C_ARGS: /* void */
+	C_ARGS:
+		/* void */
 
 gboolean
 notify_is_initted (class)
-	C_ARGS: /* void */
+	C_ARGS:
+		/* void */
 
 const gchar *
 notify_get_app_name (class)
-	C_ARGS: /* void */
+	C_ARGS:
+		/* void */
 
 void
 notify_get_server_caps (class)
@@ -70,27 +74,14 @@ notify_get_server_caps (class)
 		}
 		g_list_free (list);
 
-void
-notify_get_server_info (class)
-	PREINIT:
-		gboolean success;
-		char *name;
-		char *vendor;
-		char *version;
-		char *spec_version;
-	PPCODE:
-		success = notify_get_server_info (&name, &vendor, &version,
-		                                  &spec_version);
-
-		if (!success) {
+NO_OUTPUT gboolean
+notify_get_server_info (class, OUTLIST char *name, OUTLIST char *vendor, OUTLIST char *version, OUTLIST char *spec_version)
+	C_ARGS:
+		&name, &vendor, &version, &spec_version
+	POSTCALL:
+		if (!RETVAL) {
 			XSRETURN_EMPTY;
 		}
-
-		EXTEND (sp, 4);
-		mPUSHp (name, strlen (name));
-		mPUSHp (vendor, strlen (vendor));
-		mPUSHp (version, strlen (version));
-		mPUSHp (spec_version, strlen (spec_version));
 
 MODULE = Gtk2::Notify	PACKAGE = Gtk2::Notify	PREFIX = notify_notification_
 
@@ -100,7 +91,8 @@ notify_notification_new (class, summary, body=NULL, icon=NULL, attach=NULL)
 		const gchar *body
 		const gchar *icon
 		GtkWidget_ornull *attach
-	C_ARGS: summary, body, icon, attach
+	C_ARGS:
+		summary, body, icon, attach
 
 #if GTK_CHECK_VERSION (2, 9, 2)
 
@@ -110,7 +102,8 @@ notify_notification_new_with_status_icon (class, summary, body=NULL, icon=NULL, 
 		const gchar *body
 		const gchar *icon
 		GtkStatusIcon *status_icon
-	C_ARGS: summary, body, icon, status_icon
+	C_ARGS:
+		summary, body, icon, status_icon
 
 #endif
 
@@ -147,7 +140,8 @@ notify_notification_show (notification)
 		NotifyNotification *notification
 	PREINIT:
 		GError *error = NULL;
-	C_ARGS: notification, &error
+	C_ARGS:
+		notification, &error
 	POSTCALL:
 		if (!RETVAL) {
 			gperl_croak_gerror (NULL, error);
@@ -189,6 +183,11 @@ set_hint (notification, key, value)
 			notify_notification_set_hint_string (notification, key,
 			                                     (gchar *)SvPV_nolen (value));
 		} else {
+			SvGETMAGIC (value);
+			(void)SvUPGRADE (value, SVt_PV);
+
+			notify_notification_set_hint_string (notification, key,
+			                                     (gchar *)SvPV_nolen (value));
 		}
 
 void
@@ -219,8 +218,12 @@ void
 notify_notification_set_hint_byte_array (notification, key, value)
 		NotifyNotification *notification
 		const gchar *key
-		const guchar *value
-	C_ARGS: notification, key, value, sv_len (ST (3))
+	PREINIT:
+		STRLEN len = 0;
+	INPUT:
+		const guchar *value = ($type)SvPVbyte ($arg, len);
+	C_ARGS:
+		notification, key, value, len
 
 void
 notify_notification_clear_hints (notification)
@@ -255,7 +258,8 @@ notify_notification_close (notification)
 		NotifyNotification *notification
 	PREINIT:
 		GError *error = NULL;
-	C_ARGS: notification, &error
+	C_ARGS:
+		notification, &error
 	POSTCALL:
 		if (!RETVAL) {
 			gperl_croak_gerror (NULL, error);

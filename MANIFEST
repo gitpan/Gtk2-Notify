@@ -10,12 +10,13 @@ examples/replace.pl
 examples/server-info.pl
 examples/urgency.pl
 examples/xy.pl
+lib/Notify.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
 maps
 perl_notify.h
-pm/Notify.pm
+ppport.h
 README
 t/00-load.t
 t/class.t

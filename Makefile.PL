@@ -19,25 +19,25 @@ our @xs_files = <xs/*.xs>;
 
 $notify->add_xs( @xs_files );
 $notify->add_typemaps( File::Spec->rel2abs( File::Spec->catfile(qw( build notify.typemap )) ) );
-$notify->set_inc( $pkg_config{cflags}.' -Ibuild -Wall -Werror' );
+$notify->set_inc( $pkg_config{cflags}.' -Ibuild -Wall' );
 $notify->set_libs( $pkg_config{libs} );
 $notify->install( File::Spec->catfile(qw( build notify-autogen.h )) );
 $notify->add_pm(
-    'pm/Notify.pm' => '$(INST_LIBDIR)/Notify.pm',
+    'lib/Notify.pm' => '$(INST_LIBDIR)/Notify.pm',
 );
 
 WriteMakefile(
     NAME                => 'Gtk2::Notify',
     AUTHOR              => 'Florian Ragwitz <rafl@debian.org>',
-    VERSION_FROM        => 'pm/Notify.pm',
-    ABSTRACT_FROM       => 'pm/Notify.pm',
+    VERSION_FROM        => 'lib/Notify.pm',
+    ABSTRACT_FROM       => 'lib/Notify.pm',
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More' => '0',
         'Glib'       => '1.093',
     },
     MAN3PODS => {
-        'pm/Notify.pm' => '$(INST_MAN3DIR)/Gtk2::Notify.$(MAN3EXT)',
+        'lib/Notify.pm' => '$(INST_MAN3DIR)/Gtk2::Notify.$(MAN3EXT)',
         Glib::MakeHelper->do_pod_files(@xs_files),
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
@@ -48,7 +48,7 @@ WriteMakefile(
 package MY;
 
 sub postamble {
-    return 'POD_SET=$$Glib::GenPod::COPYRIGHT="Copyright (C) 2006 Florian Ragwitz<br><br>'
+    return 'POD_SET=$$Glib::GenPod::COPYRIGHT="Copyright (C) 2006-2007 Florian Ragwitz<br><br>'
         . 'This library is free software; you can redistribute it and/or modify it under '
         . 'the terms of the GNU Library General Public License as published by the Free '
         . 'Software Foundation; either version 2 of the License, or (at your option) any '
