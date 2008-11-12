@@ -10,11 +10,22 @@ examples/replace.pl
 examples/server-info.pl
 examples/urgency.pl
 examples/xy.pl
-lib/Notify.pm
+ext/Module/Install/PRIVATE/Notify.pm
+inc/Module/Install.pm
+inc/Module/Install/Base.pm
+inc/Module/Install/Can.pm
+inc/Module/Install/Fetch.pm
+inc/Module/Install/Makefile.pm
+inc/Module/Install/Metadata.pm
+inc/Module/Install/PRIVATE/Notify.pm
+inc/Module/Install/Win32.pm
+inc/Module/Install/WriteAll.pm
+lib/Gtk2/Notify.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
 maps
+META.yml
 perl_notify.h
 ppport.h
 README
@@ -22,7 +33,5 @@ t/00-load.t
 t/class.t
 t/import.t
 t/notification.t
-t/pod-coverage.t
 t/pod.t
 xs/Notify.xs
-META.yml                                 Module meta-data (added by MakeMaker)
